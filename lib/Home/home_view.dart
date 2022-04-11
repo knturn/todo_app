@@ -12,7 +12,15 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("HELLOO TODO"),
+        title: const Center(
+            child: Text(
+          "TODOS",
+          style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.italic,
+              backgroundColor: Color.fromARGB(255, 4, 6, 121)),
+        )),
       ),
       body: Card(
         child: ListView.builder(
