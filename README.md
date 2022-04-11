@@ -2,6 +2,6 @@
 
 A new Flutter project.
 Hi there!
-![addpage](file:///C:/Users/kntur/Desktop/addpage.png)
+![addpage](https://raw.githubusercontent.com/knturn/todo_app/development/addpage.png?token=GHSAT0AAAAAABRFURITNEACWZQVOTS4FVLWYSTUTXA)
 
-![homepage](file:///C:/Users/kntur/Desktop/home.png)
+![homepage](https://raw.githubusercontent.com/knturn/todo_app/development/home.png?token=GHSAT0AAAAAABRFURITVT65ATSNOTM23EFQYSTUUPA)
