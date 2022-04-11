@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../AddArea/AddView.dart';
+import '../AddArea/add_view.dart';
 
 class HomeViewTODO extends StatefulWidget {
   const HomeViewTODO({Key? key}) : super(key: key);
@@ -62,7 +62,7 @@ FloatingActionButton buildButton(context) {
     label: const Text("Add new one"),
     onPressed: () => {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddView(),
+        builder: (context) => const AddView(),
       )),
     },
     shape: const StadiumBorder(),

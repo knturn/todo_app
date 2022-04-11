@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../features/customTextFieldArea/Custom_Text_Field.dart';
+
 class AddView extends StatefulWidget {
   const AddView({Key? key}) : super(key: key);
 
@@ -13,20 +15,12 @@ class _AddViewState extends State<AddView> {
     return Scaffold(
       appBar: buildAddingPageAppBar(),
       body: Column(
-        children: const [
-          TextField(
-            maxLines: 1,
-            maxLength: 30,
-            decoration: InputDecoration(
-              icon: Icon(Icons.title),
-              hintText: ("BAŞLIK"),
-            ),
+        children: [
+          CustomTextField(
+            title: "Başlık",
+            descrition: "Açıklama",
           ),
-          TextField(
-            decoration: InputDecoration(
-              hintText: ("Açıklamalar"),
-            ),
-          )
+          CustomTextField(title: "title", descrition: "descrition"),
         ],
       ),
     );
