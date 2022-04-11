@@ -14,14 +14,21 @@ class _AddViewState extends State<AddView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAddingPageAppBar(),
-      body: Column(
-        children: [
-          CustomTextField(
-            title: "Başlık",
-            descrition: "Açıklama",
-          ),
-          CustomTextField(title: "title", descrition: "descrition"),
-        ],
+      body: Card(
+        elevation: 5,
+        child: Column(
+          children: [
+            CustomTextField(
+              title: "Başlık",
+              descrition: "Açıklama",
+            ),
+            const Divider(
+              color: Color.fromARGB(255, 235, 70, 5),
+              thickness: 3,
+            ),
+            CustomTextField(title: "title", descrition: "descrition"),
+          ],
+        ),
       ),
     );
   }
