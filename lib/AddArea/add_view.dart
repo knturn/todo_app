@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/service/data_manager.dart';
 
 import '../features/customTextFieldArea/Custom_Text_Field.dart';
 
@@ -26,7 +27,7 @@ class _AddViewState extends State<AddView> {
               color: Color.fromARGB(255, 235, 70, 5),
               thickness: 3,
             ),
-            CustomTextField(title: "title", descrition: "descrition"),
+            //CustomTextField(title: "title", descrition: "descrition"),
           ],
         ),
       ),
@@ -37,29 +38,29 @@ class _AddViewState extends State<AddView> {
     return AppBar(
       elevation: 10,
       shadowColor: Colors.greenAccent,
-      actions: const <Widget>[
+      actions: <Widget>[
         CircleAvatar(
           backgroundColor: Colors.white,
-          child: Icon(
-            Icons.cancel,
-            size: 35,
-            color: Color.fromARGB(255, 228, 106, 6),
+          child: IconButton(
+            onPressed: () {
+              DataManager().addTodo();
+            },
+            icon: const Icon(Icons.add),
+            color: const Color.fromARGB(255, 228, 106, 6),
           ),
-        ),
-        SizedBox(
-          width: 50,
         ),
         Padding(
-          padding: EdgeInsets.only(right: 30),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Icon(
-              Icons.check,
-              size: 35,
-              color: Color.fromARGB(255, 228, 106, 6),
-            ),
-          ),
-        )
+            padding: const EdgeInsets.only(right: 30, left: 50),
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: IconButton(
+                onPressed: () {
+                  DataManager().readingSql();
+                },
+                icon: const Icon(Icons.check_sharp),
+                color: const Color.fromARGB(255, 228, 106, 6),
+              ),
+            ))
       ],
     );
   }

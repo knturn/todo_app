@@ -10,6 +10,7 @@ class HomeViewTODO extends StatefulWidget {
 }
 
 class _HomeViewTODOState extends State<HomeViewTODO> {
+  List<int> sayilar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +32,7 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
       title: const Text(
         "Todos",
         style: TextStyle(
-            fontSize: 36,
+            fontSize: 35,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.italic,
             color: Color.fromARGB(255, 221, 221, 238)),
@@ -69,5 +70,3 @@ FloatingActionButton buildButton(context) {
     backgroundColor: const Color.fromARGB(255, 10, 14, 236),
   );
 }
-
-List<int> sayilar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
