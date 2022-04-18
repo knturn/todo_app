@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/Models/todo_model.dart';
 import 'package:todo_app/service/data_manager.dart';
 
 import '../features/customTextFieldArea/Custom_Text_Field.dart';
@@ -42,9 +43,7 @@ class _AddViewState extends State<AddView> {
         CircleAvatar(
           backgroundColor: Colors.white,
           child: IconButton(
-            onPressed: () {
-              DataManager().addTodo();
-            },
+            onPressed: () {},
             icon: const Icon(Icons.add),
             color: const Color.fromARGB(255, 228, 106, 6),
           ),
@@ -54,9 +53,7 @@ class _AddViewState extends State<AddView> {
             child: CircleAvatar(
               backgroundColor: Colors.white,
               child: IconButton(
-                onPressed: () {
-                  DataManager().readingSql();
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.check_sharp),
                 color: const Color.fromARGB(255, 228, 106, 6),
               ),

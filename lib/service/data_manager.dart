@@ -3,10 +3,27 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../Models/todo_model.dart';
+
 class DataManager {
   static Database? _db;
 
+  Future<List<Map<String, dynamic>>> getTodoMaps() async {
+    Database db = await this.db;
+    return await db.query("todos");
+  }
+
+  Future<List<TodoModel>> getTodos() async {
+    final mapsList = await getTodoMaps();
+    List<TodoModel> todoList = [];
+    mapsList.forEach((element) {
+      todoList.add(TodoModel.fromMap(element));
+    });
+    return todoList;
+  }
+
   Future<Database> get db async {
+    // ignore: prefer_conditional_assignment
     if (_db == null) {
       _db = await _initDb();
     }
@@ -25,18 +42,15 @@ class DataManager {
         'CREATE TABLE todos (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT)');
   }
 
-  Future<int> addTodo() async {
+  Future<int> addTodo(TodoModel todoModel) async {
     Database db = await this.db;
-    var test = {"title": "Deneme1", "description": "Deneme1descrpisrin"};
-    // ignore: avoid_print
-    print("succeessed");
-    return await db.insert("todos", test);
+
+    return await db.insert("todos", todoModel.toMap());
   }
 
-  Future<void> readingSql() async {
+  Future<int> uptadeIsDone(TodoModel todoModel) async {
     Database db = await this.db;
-    var test = await db.query("todos");
-    // ignore: avoid_print
-    print(test);
+    return await db.update("todos", todoModel.toMap(),
+        where: "db=?", whereArgs: [todoModel.id]);
   }
 }
