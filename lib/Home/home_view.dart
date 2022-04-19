@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../AppThema/app_theme.dart';
+import '../Models/todo_model.dart';
+import '../service/data_manager.dart';
 
 import '../AddArea/add_view.dart';
 
@@ -10,7 +13,22 @@ class HomeViewTODO extends StatefulWidget {
 }
 
 class _HomeViewTODOState extends State<HomeViewTODO> {
-  List<int> sayilar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  List<TodoModel> todos = [];
+  List<TodoModel> doneTodos = [];
+  @override
+  void initState() {
+    loadData();
+    super.initState();
+  }
+
+  loadData() {
+    DataManager.material.getTodos(true).then((value) {
+      setState(() {
+        todos = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +43,13 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
 
   AppBar buildAppbar() {
     return AppBar(
-      leading: const Icon(
-        Icons.checklist,
-        size: 35,
+      leading: IconButton(
+        onPressed: () {
+          setState(() {
+            loadData();
+          });
+        },
+        icon: const Icon(Icons.checklist),
       ),
       title: const Text(
         "Todos",
@@ -40,19 +62,21 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
     );
   }
 
-  ListView buildListView() {
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        title: const Text("Kaan"),
-        leading: Text(
-          sayilar[index].toString(),
-          style: const TextStyle(
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ),
-      itemCount: sayilar.length,
-    );
+  Widget buildListView() {
+    return todos.isEmpty
+        ? const Center(child: Text("data is empty"))
+        : ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+                  title: Text(todos[index].title.toString()),
+                  subtitle: Text(todos[index].description.toString()),
+                  leading: Text(
+                    [index].toString(),
+                    style: const TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+            itemCount: todos.length);
   }
 }
 
@@ -60,13 +84,16 @@ FloatingActionButton buildButton(context) {
   return FloatingActionButton.extended(
     elevation: 2,
     icon: const Icon(Icons.add),
-    label: const Text("Add new one"),
+    label: const Text(
+      "Add new one",
+      style: TextStyle(color: Color.fromARGB(249, 0, 0, 0)),
+    ),
     onPressed: () => {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const AddView(),
       )),
     },
     shape: const StadiumBorder(),
-    backgroundColor: const Color.fromARGB(255, 10, 14, 236),
+    backgroundColor: LightColorTheme().addbuttonColor,
   );
 }

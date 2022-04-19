@@ -19,7 +19,7 @@ class TodoModel {
     map["description"] = description;
     map["isDone"] = isDone ? 1 : 0;
     map["id"] = id;
-    throw TodoModel(isDone: isDone != isDone);
+    return map;
   }
 
   factory TodoModel.fromMap(Map<String, dynamic> map) {

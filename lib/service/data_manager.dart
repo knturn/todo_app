@@ -6,22 +6,30 @@ import 'package:sqflite/sqflite.dart';
 import '../Models/todo_model.dart';
 
 class DataManager {
-  static Database? _db;
+  static DataManager material = DataManager._internal();
+  DataManager._internal();
+  factory DataManager() {
+    return material;
+  }
 
-  Future<List<Map<String, dynamic>>> getTodoMaps() async {
+  Future<List<Map<String, dynamic>>> _getTodoMaps() async {
     Database db = await this.db;
     return await db.query("todos");
   }
 
-  Future<List<TodoModel>> getTodos() async {
-    final mapsList = await getTodoMaps();
+  Future<List<TodoModel>> getTodos(bool isDone) async {
+    final mapsList = await _getTodoMaps();
     List<TodoModel> todoList = [];
-    mapsList.forEach((element) {
+    for (var element in mapsList) {
       todoList.add(TodoModel.fromMap(element));
-    });
-    return todoList;
+    }
+    if (isDone) {
+      return todoList.where((element) => !element.isDone).toList();
+    }
+    return todoList.where((element) => element.isDone).toList();
   }
 
+  static Database? _db;
   Future<Database> get db async {
     // ignore: prefer_conditional_assignment
     if (_db == null) {
@@ -39,7 +47,7 @@ class DataManager {
 
   void _createDb(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE todos (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT)');
+        'CREATE TABLE todos (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, isDone INTEGER)');
   }
 
   Future<int> addTodo(TodoModel todoModel) async {
@@ -52,5 +60,10 @@ class DataManager {
     Database db = await this.db;
     return await db.update("todos", todoModel.toMap(),
         where: "db=?", whereArgs: [todoModel.id]);
+  }
+
+  Future<int> delete(int id) async {
+    Database db = await this.db;
+    return await db.delete("todos", where: 'db = ?', whereArgs: [id]);
   }
 }

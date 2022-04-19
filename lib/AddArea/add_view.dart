@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/Models/todo_model.dart';
-import 'package:todo_app/service/data_manager.dart';
 
-import '../features/customTextFieldArea/Custom_Text_Field.dart';
+import '../AppThema/app_theme.dart';
+import '../Models/todo_model.dart';
+import '../features/CustomTextFieldArea/custom_text_field.dart';
+import '../service/data_manager.dart';
 
 class AddView extends StatefulWidget {
   const AddView({Key? key}) : super(key: key);
@@ -12,24 +13,34 @@ class AddView extends StatefulWidget {
 }
 
 class _AddViewState extends State<AddView> {
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAddingPageAppBar(),
-      body: Card(
-        elevation: 5,
-        child: Column(
-          children: [
-            CustomTextField(
-              title: "Başlık",
-              descrition: "Açıklama",
-            ),
-            const Divider(
-              color: Color.fromARGB(255, 235, 70, 5),
-              thickness: 3,
-            ),
-            //CustomTextField(title: "title", descrition: "descrition"),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: buildAddingPageAppBar(),
+        body: Card(
+          elevation: 5,
+          child: Column(
+            children: [
+              Container(
+                child: (Column(
+                  children: [
+                    CustomTextField(
+                      texteditingController: titleController,
+                      descriptioneditingController: descriptionController,
+                    ),
+                  ],
+                )),
+              ),
+              Divider(
+                color: LightColorTheme().dividerColor,
+                thickness: 3,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -43,9 +54,15 @@ class _AddViewState extends State<AddView> {
         CircleAvatar(
           backgroundColor: Colors.white,
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              DataManager.material.addTodo(TodoModel(
+                isDone: false,
+                title: titleController.text,
+                description: descriptionController.text,
+              ));
+            },
             icon: const Icon(Icons.add),
-            color: const Color.fromARGB(255, 228, 106, 6),
+            color: LightColorTheme().appbarIconsColor,
           ),
         ),
         Padding(
@@ -55,7 +72,7 @@ class _AddViewState extends State<AddView> {
               child: IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.check_sharp),
-                color: const Color.fromARGB(255, 228, 106, 6),
+                color: LightColorTheme().appbarIconsColor,
               ),
             ))
       ],
