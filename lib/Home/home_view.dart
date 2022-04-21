@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../AppThema/app_theme.dart';
 import '../Models/todo_model.dart';
 import '../service/data_manager.dart';
@@ -33,10 +34,7 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppbar(),
-      body: Card(
-        elevation: 3,
-        child: buildListView(),
-      ),
+      body: Card(child: buildListView()),
       floatingActionButton: buildButton(context),
     );
   }
@@ -65,14 +63,42 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
   Widget buildListView() {
     return todos.isEmpty
         ? const Center(child: Text("data is empty"))
-        : ListView.builder(
-            itemBuilder: (context, index) => ListTile(
-                  title: Text(todos[index].title.toString()),
-                  subtitle: Text(todos[index].description.toString()),
-                  leading: Text(
-                    [index].toString(),
-                    style: const TextStyle(
-                      fontStyle: FontStyle.italic,
+        : ListView.separated(
+            separatorBuilder: (context, index) => const Divider(
+                  color: Colors.amber,
+                ),
+            itemBuilder: (context, index) => Slidable(
+                  startActionPane: const ActionPane(
+                    children: [
+                      SlidableAction(
+                        spacing: 2,
+                        onPressed: null,
+                        backgroundColor: Color.fromARGB(255, 0, 160, 235),
+                        foregroundColor: Color.fromARGB(255, 243, 247, 243),
+                        icon: Icons.check,
+                        label: "DONE",
+                      ),
+                      SlidableAction(
+                        spacing: 2,
+                        onPressed: null,
+                        backgroundColor: Color.fromARGB(255, 228, 29, 3),
+                        foregroundColor: Color.fromARGB(255, 243, 247, 243),
+                        icon: Icons.delete,
+                        label: "LATE",
+                      )
+                    ],
+                    motion: ScrollMotion(),
+                  ),
+                  child: Card(
+                    child: ListTile(
+                      title: Text(todos[index].title.toString()),
+                      subtitle: Text(todos[index].description.toString()),
+                      leading: Text(
+                        (index + 1).toString(),
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ),
                   ),
                 ),

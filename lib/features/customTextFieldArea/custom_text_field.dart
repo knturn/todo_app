@@ -27,7 +27,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             maxLines: 1,
             maxLength: 20,
             decoration: InputDecoration(
-              icon: const Icon(Icons.title),
+              icon: const Icon(
+                Icons.title,
+                color: Colors.orangeAccent,
+              ),
               hintText: (title),
             ),
           ),
