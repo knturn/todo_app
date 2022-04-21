@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../AddArea/add_view.dart';
 import '../AppThema/app_theme.dart';
 import '../Models/todo_model.dart';
 import '../service/data_manager.dart';
-
-import '../AddArea/add_view.dart';
 
 class HomeViewTODO extends StatefulWidget {
   const HomeViewTODO({Key? key}) : super(key: key);
@@ -68,27 +68,7 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
                   color: Colors.amber,
                 ),
             itemBuilder: (context, index) => Slidable(
-                  startActionPane: const ActionPane(
-                    children: [
-                      SlidableAction(
-                        spacing: 2,
-                        onPressed: null,
-                        backgroundColor: Color.fromARGB(255, 0, 160, 235),
-                        foregroundColor: Color.fromARGB(255, 243, 247, 243),
-                        icon: Icons.check,
-                        label: "DONE",
-                      ),
-                      SlidableAction(
-                        spacing: 2,
-                        onPressed: null,
-                        backgroundColor: Color.fromARGB(255, 228, 29, 3),
-                        foregroundColor: Color.fromARGB(255, 243, 247, 243),
-                        icon: Icons.delete,
-                        label: "LATE",
-                      )
-                    ],
-                    motion: ScrollMotion(),
-                  ),
+                  startActionPane: slidableAction(),
                   child: Card(
                     child: ListTile(
                       title: Text(todos[index].title.toString()),
@@ -103,6 +83,30 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
                   ),
                 ),
             itemCount: todos.length);
+  }
+
+  ActionPane slidableAction() {
+    return const ActionPane(
+      children: [
+        SlidableAction(
+          spacing: 2,
+          onPressed: null,
+          backgroundColor: Color.fromARGB(255, 0, 160, 235),
+          foregroundColor: Color.fromARGB(255, 243, 247, 243),
+          icon: Icons.check,
+          label: "DONE",
+        ),
+        SlidableAction(
+          spacing: 2,
+          onPressed: null,
+          backgroundColor: Color.fromARGB(255, 228, 29, 3),
+          foregroundColor: Color.fromARGB(255, 243, 247, 243),
+          icon: Icons.delete,
+          label: "LATE",
+        )
+      ],
+      motion: ScrollMotion(),
+    );
   }
 }
 
