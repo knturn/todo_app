@@ -68,10 +68,9 @@ class _AddViewState extends State<AddView> {
                         title: titleController.text,
                         description: descriptionController.text,
                       ))
-                      .then((value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeViewTODO())));
+                      .then((value) => Navigator.pop(
+                            context,
+                          ));
                 }
               },
               icon: const Icon(Icons.add),

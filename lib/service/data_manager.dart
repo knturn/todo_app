@@ -64,6 +64,6 @@ class DataManager {
 
   Future<int> delete(int id) async {
     Database db = await this.db;
-    return await db.delete("todos", where: 'db = ?', whereArgs: [id]);
+    return await db.delete("todos", where: 'id = ?', whereArgs: [id]);
   }
 }

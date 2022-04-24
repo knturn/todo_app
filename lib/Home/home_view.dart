@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../AddArea/add_view.dart';
 import '../AppThema/app_theme.dart';
@@ -15,7 +16,7 @@ class HomeViewTODO extends StatefulWidget {
 
 class _HomeViewTODOState extends State<HomeViewTODO> {
   List<TodoModel> todos = [];
-  List<TodoModel> doneTodos = [];
+
   @override
   void initState() {
     loadData();
@@ -43,9 +44,7 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          setState(() {
-            loadData();
-          });
+          loadData();
         },
         icon: const Icon(Icons.checklist),
       ),
@@ -68,7 +67,7 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
                   color: Colors.amber,
                 ),
             itemBuilder: (context, index) => Slidable(
-                  startActionPane: slidableAction(),
+                  startActionPane: slidableAction(index),
                   child: Card(
                     child: ListTile(
                       title: Text(todos[index].title.toString()),
@@ -85,10 +84,10 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
             itemCount: todos.length);
   }
 
-  ActionPane slidableAction() {
-    return const ActionPane(
+  ActionPane slidableAction(int index) {
+    return ActionPane(
       children: [
-        SlidableAction(
+        const SlidableAction(
           spacing: 2,
           onPressed: null,
           backgroundColor: Color.fromARGB(255, 0, 160, 235),
@@ -98,14 +97,21 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
         ),
         SlidableAction(
           spacing: 2,
-          onPressed: null,
-          backgroundColor: Color.fromARGB(255, 228, 29, 3),
-          foregroundColor: Color.fromARGB(255, 243, 247, 243),
+          onPressed: (value) {
+            int? _id = todos[index].id;
+            if (_id != null) {
+              //setState(() {
+              DataManager.material.delete(_id).then((value) => loadData());
+              //});
+            }
+          },
+          backgroundColor: const Color.fromARGB(255, 228, 29, 3),
+          foregroundColor: const Color.fromARGB(255, 243, 247, 243),
           icon: Icons.delete,
           label: "LATE",
         )
       ],
-      motion: ScrollMotion(),
+      motion: const ScrollMotion(),
     );
   }
 }
