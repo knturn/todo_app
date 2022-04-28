@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../Home/home_view.dart';
 
 import '../AppThema/app_theme.dart';
 import '../Models/todo_model.dart';
@@ -22,26 +21,17 @@ class _AddViewState extends State<AddView> {
     return SafeArea(
       child: Scaffold(
         appBar: buildAddingPageAppBar(context),
-        body: Card(
-          elevation: 5,
-          child: Column(
-            children: [
-              Container(
-                child: (Column(
-                  children: [
-                    CustomTextField(
-                      texteditingController: titleController,
-                      descriptioneditingController: descriptionController,
-                    ),
-                  ],
-                )),
-              ),
-              Divider(
-                color: LightColorTheme().dividerColor,
-                thickness: 3,
-              ),
-            ],
-          ),
+        body: Column(
+          children: [
+            (CustomTextField(
+              texteditingController: titleController,
+              descriptioneditingController: descriptionController,
+            )),
+            Divider(
+              color: LightColorTheme().dividerColor,
+              thickness: 3,
+            ),
+          ],
         ),
       ),
     );
@@ -68,9 +58,7 @@ class _AddViewState extends State<AddView> {
                         title: titleController.text,
                         description: descriptionController.text,
                       ))
-                      .then((value) => Navigator.pop(
-                            context,
-                          ));
+                      .then((value) => Navigator.pop(context));
                 }
               },
               icon: const Icon(Icons.add),

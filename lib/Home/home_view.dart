@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sqflite/sqflite.dart';
@@ -20,7 +22,18 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
   @override
   void initState() {
     loadData();
+
     super.initState();
+  }
+
+  void navigateAddPage() {
+    Route route = MaterialPageRoute(builder: (context) => const AddView());
+    Navigator.push(context, route).then(onGoBack);
+  }
+
+  FutureOr onGoBack(value) {
+    loadData();
+    setState(() {});
   }
 
   loadData() {
@@ -36,7 +49,23 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
     return Scaffold(
       appBar: buildAppbar(),
       body: Card(child: buildListView()),
-      floatingActionButton: buildButton(context),
+      floatingActionButton: buildAddingPageButton(),
+    );
+  }
+
+  FloatingActionButton buildAddingPageButton() {
+    return FloatingActionButton.extended(
+      elevation: 2,
+      icon: const Icon(Icons.add),
+      label: const Text(
+        "Add new one",
+        style: TextStyle(color: Color.fromARGB(249, 0, 0, 0)),
+      ),
+      onPressed: () => {
+        navigateAddPage(),
+      },
+      shape: const StadiumBorder(),
+      backgroundColor: LightColorTheme().addbuttonColor,
     );
   }
 
@@ -114,22 +143,4 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
       motion: const ScrollMotion(),
     );
   }
-}
-
-FloatingActionButton buildButton(context) {
-  return FloatingActionButton.extended(
-    elevation: 2,
-    icon: const Icon(Icons.add),
-    label: const Text(
-      "Add new one",
-      style: TextStyle(color: Color.fromARGB(249, 0, 0, 0)),
-    ),
-    onPressed: () => {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const AddView(),
-      )),
-    },
-    shape: const StadiumBorder(),
-    backgroundColor: LightColorTheme().addbuttonColor,
-  );
 }
