@@ -13,8 +13,38 @@ class AddView extends StatefulWidget {
 }
 
 class _AddViewState extends State<AddView> {
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  bool selectionIsActive = false;
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    if (titleController.text.isEmpty) {
+      titleController.addListener(() {
+        bool selectionIsActive = titleController.text.isNotEmpty &
+            descriptionController.text.isNotEmpty;
+        setState(() {
+          this.selectionIsActive = selectionIsActive;
+        });
+      });
+      descriptionController.addListener(() {
+        bool selectionIsActive = descriptionController.text.isNotEmpty &
+            titleController.text.isNotEmpty;
+        setState(() {
+          this.selectionIsActive = selectionIsActive;
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,21 +77,20 @@ class _AddViewState extends State<AddView> {
           child: CircleAvatar(
             backgroundColor: Colors.white,
             child: IconButton(
-              onPressed: () {
-                if (descriptionController.text.isEmpty |
-                    titleController.text.isEmpty) {
-                  return _showAlertDialog(context);
-                } else {
-                  DataManager.material
-                      .addTodo(TodoModel(
-                        isDone: false,
-                        title: titleController.text,
-                        description: descriptionController.text,
-                      ))
-                      .then((value) => Navigator.pop(context));
-                }
-              },
+              onPressed: selectionIsActive
+                  ? () {
+                      DataManager.material
+                          .addTodo(TodoModel(
+                            isDone: false,
+                            title: titleController.text,
+                            description: descriptionController.text,
+                          ))
+                          .then((value) => Navigator.pop(context));
+                      selectionIsActive = false;
+                    }
+                  : null,
               icon: const Icon(Icons.add),
+              disabledColor: const Color.fromARGB(255, 5, 0, 0),
               color: LightColorTheme().appbarIconsColor,
             ),
           ),
@@ -70,7 +99,7 @@ class _AddViewState extends State<AddView> {
     );
   }
 }
-
+/*
 void _showAlertDialog(context) async {
   return showDialog<void>(
     context: context,
@@ -98,3 +127,4 @@ void _showAlertDialog(context) async {
     },
   );
 }
+*/
