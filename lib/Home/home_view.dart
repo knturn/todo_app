@@ -5,7 +5,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../AddArea/add_view.dart';
-import '../AppThema/app_theme.dart';
+import '../Constants/AppThema/AppThema/app_theme.dart';
+
 import '../Models/todo_model.dart';
 import '../service/data_manager.dart';
 
@@ -33,7 +34,6 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
 
   FutureOr onGoBack(value) {
     loadData();
-    setState(() {});
   }
 
   loadData() {
@@ -48,7 +48,7 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppbar(),
-      body: Card(child: buildListView()),
+      body: Card(child: buildListView(todos)),
       floatingActionButton: buildAddingPageButton(),
     );
   }
@@ -57,9 +57,9 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
     return FloatingActionButton.extended(
       elevation: 2,
       icon: const Icon(Icons.add),
-      label: const Text(
+      label: Text(
         "Add new one",
-        style: TextStyle(color: Color.fromARGB(249, 0, 0, 0)),
+        style: TextStyle(color: LightColorTheme().addButonTextColor),
       ),
       onPressed: () => {
         navigateAddPage(),
@@ -77,35 +77,47 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
         },
         icon: const Icon(Icons.checklist),
       ),
-      title: const Text(
+      title: Text(
         "Todos",
         style: TextStyle(
             fontSize: 35,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.italic,
-            color: Color.fromARGB(255, 221, 221, 238)),
+            color: LightColorTheme().textColorHomeAppBar),
       ),
     );
   }
 
-  Widget buildListView() {
+  Widget buildListView(List<TodoModel> todos) {
     return todos.isEmpty
         ? const Center(child: Text("data is empty"))
         : ListView.separated(
-            separatorBuilder: (context, index) => const Divider(
-                  color: Colors.amber,
+            separatorBuilder: (context, index) => Divider(
+                  color: LightColorTheme().seperatorColor,
                 ),
             itemBuilder: (context, index) => Slidable(
                   startActionPane: slidableAction(index),
                   child: Card(
                     child: ListTile(
-                      title: Text(todos[index].title.toString()),
+                      title: todos[index].isDone
+                          ? Text(todos[index].isDone.toString(),
+                              style: const TextStyle(
+                                  decoration: TextDecoration.lineThrough))
+                          : Text(todos[index].title.toString()),
                       subtitle: Text(todos[index].description.toString()),
                       leading: Text(
                         (index + 1).toString(),
                         style: const TextStyle(
                           fontStyle: FontStyle.italic,
                         ),
+                      ),
+                      trailing: Checkbox(
+                        onChanged: (bool? value) {
+                          DataManager.material
+                              .uptadeIsDone(todos[index])
+                              .then((value) => loadData());
+                        },
+                        value: todos[index].isDone,
                       ),
                     ),
                   ),
@@ -114,33 +126,36 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
   }
 
   ActionPane slidableAction(int index) {
+    String doneexpresion = todos[index].isDone ? "UNDONE" : "DONE";
+    String remove = "REMOVE";
     return ActionPane(
       children: [
-        const SlidableAction(
-          spacing: 2,
-          onPressed: null,
-          backgroundColor: Color.fromARGB(255, 0, 160, 235),
-          foregroundColor: Color.fromARGB(255, 243, 247, 243),
-          icon: Icons.check,
-          label: "DONE",
-        ),
+        SlidableAction(
+            spacing: 2,
+            onPressed: (value) {
+              DataManager.material
+                  .uptadeIsDone(todos[index])
+                  .then((value) => loadData());
+            },
+            backgroundColor: LightColorTheme().slidableBackgroundblue!,
+            foregroundColor: LightColorTheme().circleAvatarBackground,
+            icon: Icons.check,
+            label: doneexpresion),
         SlidableAction(
           spacing: 2,
           onPressed: (value) {
             int? _id = todos[index].id;
             if (_id != null) {
-              //setState(() {
               DataManager.material.delete(_id).then((value) => loadData());
-              //});
             }
           },
-          backgroundColor: const Color.fromARGB(255, 228, 29, 3),
-          foregroundColor: const Color.fromARGB(255, 243, 247, 243),
+          backgroundColor: LightColorTheme().slidableBackgroundred!,
+          foregroundColor: LightColorTheme().circleAvatarBackground,
           icon: Icons.delete,
-          label: "LATE",
+          label: remove,
         )
       ],
-      motion: const ScrollMotion(),
+      motion: const BehindMotion(),
     );
   }
 }

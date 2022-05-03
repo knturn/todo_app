@@ -27,6 +27,6 @@ class TodoModel {
         id: map["id"],
         title: map["title"],
         description: map["description"],
-        isDone: map["isdone"] == 1);
+        isDone: map["isDone"] == 1);
   }
 }

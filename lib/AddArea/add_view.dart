@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../AppThema/app_theme.dart';
+import '../Constants/AppThema/AppThema/app_theme.dart';
 import '../Models/todo_model.dart';
 import '../features/CustomTextFieldArea/custom_text_field.dart';
 import '../service/data_manager.dart';
@@ -19,24 +19,28 @@ class _AddViewState extends State<AddView> {
   @override
   void initState() {
     super.initState();
+    addTextListener();
+  }
+
+  void addTextListener() {
     titleController = TextEditingController();
     descriptionController = TextEditingController();
     if (titleController.text.isEmpty) {
       titleController.addListener(() {
-        bool selectionIsActive = titleController.text.isNotEmpty &
-            descriptionController.text.isNotEmpty;
-        setState(() {
-          this.selectionIsActive = selectionIsActive;
-        });
+        selectionActiveChange();
       });
       descriptionController.addListener(() {
-        bool selectionIsActive = descriptionController.text.isNotEmpty &
-            titleController.text.isNotEmpty;
-        setState(() {
-          this.selectionIsActive = selectionIsActive;
-        });
+        selectionActiveChange();
       });
     }
+  }
+
+  void selectionActiveChange() {
+    bool selectionIsActive =
+        titleController.text.isNotEmpty & descriptionController.text.isNotEmpty;
+    setState(() {
+      this.selectionIsActive = selectionIsActive;
+    });
   }
 
   @override
@@ -70,12 +74,12 @@ class _AddViewState extends State<AddView> {
   AppBar buildAddingPageAppBar(context) {
     return AppBar(
       elevation: 10,
-      shadowColor: Colors.greenAccent,
+      shadowColor: LightColorTheme().addingPageShadow,
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: CircleAvatar(
-            backgroundColor: Colors.white,
+            backgroundColor: LightColorTheme().circleAvatarBackground,
             child: IconButton(
               onPressed: selectionIsActive
                   ? () {
@@ -90,7 +94,7 @@ class _AddViewState extends State<AddView> {
                     }
                   : null,
               icon: const Icon(Icons.add),
-              disabledColor: const Color.fromARGB(255, 5, 0, 0),
+              disabledColor: LightColorTheme().disabledButtonColor,
               color: LightColorTheme().appbarIconsColor,
             ),
           ),

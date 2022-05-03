@@ -59,7 +59,7 @@ class DataManager {
   Future<int> uptadeIsDone(TodoModel todoModel) async {
     Database db = await this.db;
     return await db.update("todos", todoModel.toMap(),
-        where: "db=?", whereArgs: [todoModel.id]);
+        where: "id = ?", whereArgs: [todoModel.id]);
   }
 
   Future<int> delete(int id) async {
