@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:todo_app/features/custom_dropdown.dart';
 
 import '../AddArea/add_view.dart';
 import '../Constants/AppThema/AppThema/app_theme.dart';
@@ -85,6 +86,9 @@ class _HomeViewTODOState extends State<HomeViewTODO> {
             fontStyle: FontStyle.italic,
             color: LightColorTheme().textColorHomeAppBar),
       ),
+      actions: [
+        CustomDropdown(tittleText: "Seçim Yapınız", onChanged: (data) {})
+      ],
     );
   }
 
